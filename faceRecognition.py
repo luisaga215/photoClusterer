@@ -4,7 +4,7 @@ import shutil
 import cv2
 
 
-def clusterPhotosByFace(myPhotoPath,targetDir,resultsDir):
+def clusterPhotosByFace(myPhotoPath,targetDir,resultsDir,nomatchDir):
     ## Get all the target photos file names in a list
     photosList = os.listdir(targetDir)
 
@@ -31,7 +31,7 @@ def clusterPhotosByFace(myPhotoPath,targetDir,resultsDir):
         
         ## Iterate through face encodings to compare to myFaceEncoding
         for targetEncoding in faceEncodings:
-            
+
             ## By default compare_faces needs a list as a parameter, for testing purposes we are using the same image twice as a list
             matches = face_recognition.compare_faces([myFaceEncoding,myFaceEncoding], targetEncoding)
 
@@ -39,6 +39,8 @@ def clusterPhotosByFace(myPhotoPath,targetDir,resultsDir):
             if True in matches:
                 shutil.move(targetDir+'/'+photo, resultsDir+'/'+photo)
                 break
+            else:
+                shutil.move(targetDir+'/'+photo, nomatchDir+'/'+photo)
         
     print("Finished moving photos")
 
@@ -47,6 +49,7 @@ def clusterPhotosByFace(myPhotoPath,targetDir,resultsDir):
 myPhotoPath = "./mypicture/me.jpg"
 targetDir = "./photos"
 resultsDir = "./results"
+nomatchDir = "./nomatch"
 
 ##Make sure the resultsDir folder exists before running the script
-clusterPhotosByFace(myPhotoPath,targetDir,resultsDir)
+clusterPhotosByFace(myPhotoPath,targetDir,resultsDir,nomatchDir)
