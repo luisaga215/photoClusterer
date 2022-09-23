@@ -1,0 +1,4 @@
+*.jpg
+*.heic
+/fotos
+heicTojpg.py
