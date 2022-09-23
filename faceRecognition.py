@@ -15,6 +15,7 @@ def clusterPhotosByFace(myPhotoPath,targetDir,resultsDir,nomatchDir):
 
     faceLocations = []
     faceEncodings = []
+    matches = []
     ## Iterate through the photosList
     for photo in photosList:
 
@@ -39,8 +40,9 @@ def clusterPhotosByFace(myPhotoPath,targetDir,resultsDir,nomatchDir):
             if True in matches:
                 shutil.move(targetDir+'/'+photo, resultsDir+'/'+photo)
                 break
-            else:
-                shutil.move(targetDir+'/'+photo, nomatchDir+'/'+photo)
+        # If for loop was finished (not break) and last matches doesn't have True, move the photo to another directory
+        if not True in matches:
+            shutil.move(targetDir+'/'+photo, nomatchDir+'/'+photo)
         
     print("Finished moving photos")
 
